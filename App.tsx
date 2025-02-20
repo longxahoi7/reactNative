@@ -6,6 +6,7 @@
  */
 
 import React from 'react';
+import {useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -15,6 +16,9 @@ import {
   Text,
   useColorScheme,
   View,
+  Button,
+  TextInput,
+  FlatList,
 } from 'react-native';
 
 import {
@@ -29,90 +33,107 @@ type SectionProps = PropsWithChildren<{
   title: string;
 }>;
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+interface IToDO {
+    id:number,
+    name:string
+    };
+const App = () => {
+    const [name,setName] = useState<string>('');
+    const [test,setTest] = useState({
+        name:'Long ne',
+        age:22,
+        }     );
+    const [count,setCount] = useState<number>(0);
+    const [age,setAge] = useState<number>(0);
+//     neu dung FlatList thi phai thay id thanh key nha giup tang hieuj suat do
+const [todo,setTodo]=useState("");
+    const [listTodo,setListTodo] = useState<IToDO>([]);
+
+    function randomInteger(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+const handle=()=>{
+    if(!todo) return;
+  setListTodo([...listTodo,{id:randomInteger(1,10000),name:todo}]);
+    setTodo("");
+    }
+
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+    <View
+    style={styles.container}>
+    <View >
+    <Text style={styles.header}>Long hoi ai tra loi</Text>
+    </View>
+    <View style={styles.body}>
+       <TextInput
+       value={todo}
+       style={styles.inputText}
+onChangeText={(value)=>setTodo(value)}
+        />
+    </View>
+    <View style={styles.body}>
+       <Button title="Add todo"
+       onPress={handle}
+       />
+    </View>
+     <View style={styles.body}>
+           <Text>
+           List Todo:{todo}
+           </Text>
+           <Text>
+                   <FlatList
+                   data={listTodo}
+                   renderItem={ ({item}) =>{
+                        return (
+                         <Text>{item.name}</Text>
+                            )
+                       }}
+                   />
+
+                      </Text>
+        </View>
     </View>
   );
-}
-
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
-
+};
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
+    container:{
+            flex:1,
+padding:20
+
+        },
+    hi:{
+        fontSize:40,
+        borderWidth:2,
+        color:'red',
+        fontWieght:'600',
+        },
+     hi1:{
+            fontSize:40,
+            borderWidth:2,
+            color:'red',
+            backgroundColor:'pink',
+            marginBottom:'30',
+            padding:30,
+
+            },
+    inputText:{
+        borderWidth:1,
+        borderColor:'red',
+        padding:2,
+        marginHorizontal:20,
+        marginTop:20
+        },
+    header:{
+
+        marginTop:10,
+      marginHorizontal:10,
+      backgroundColor:"red",
+        fontSize:30,
+        textAlign:"center"
+        }
 });
+
+
+
 
 export default App;
