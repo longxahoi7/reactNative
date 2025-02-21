@@ -19,6 +19,7 @@ import {
   Button,
   TextInput,
   FlatList,
+  Pressable
 } from 'react-native';
 
 import {
@@ -56,6 +57,10 @@ const handle=()=>{
     if(!todo) return;
   setListTodo([...listTodo,{id:randomInteger(1,10000),name:todo}]);
     setTodo("");
+    };
+const deleteTodo=(id:number)=>{
+    const newTodo=listTodo.filter(item=>item.id!==id);
+    setListTodo(newTodo);
     }
 
   return (
@@ -80,17 +85,28 @@ onChangeText={(value)=>setTodo(value)}
            <Text>
            List Todo:{todo}
            </Text>
-           <Text>
-                   <FlatList
-                   data={listTodo}
-                   renderItem={ ({item}) =>{
-                        return (
-                         <Text>{item.name}</Text>
-                            )
-                       }}
-                   />
 
-                      </Text>
+
+
+             <Text>
+                              <FlatList
+                              data={listTodo}
+                              keyExtractor={item=>item.id + ""}
+                              renderItem={ ({item}) =>{
+                                   return (
+                                       <Pressable  style={({ pressed }) => ({
+                                                      opacity: pressed ? 0.5 : 1,
+                                                    })}
+                                        onPress={()=>deleteTodo(item.id)}>
+                                    <Text style={styles.text}>{item.name}</Text>
+                                                 </Pressable>
+                                       )
+                                  }}
+                              />
+
+                                 </Text>
+
+
         </View>
     </View>
   );
@@ -130,6 +146,9 @@ padding:20
       backgroundColor:"red",
         fontSize:30,
         textAlign:"center"
+        },
+    text:{
+        borderWidth:3
         }
 });
 
