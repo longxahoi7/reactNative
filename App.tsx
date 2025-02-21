@@ -19,7 +19,10 @@ import {
   Button,
   TextInput,
   FlatList,
-  Pressable
+  Pressable,
+  Alert,
+  TouchableWithoutFeedback,
+  Keyboard
 } from 'react-native';
 
 import {
@@ -54,7 +57,17 @@ const [todo,setTodo]=useState("");
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 const handle=()=>{
-    if(!todo) return;
+    if(!todo){
+        Alert.alert('Loi ne','Ban chua nhapj todo',[
+ {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+            ]);
+        return;
+        };
   setListTodo([...listTodo,{id:randomInteger(1,10000),name:todo}]);
     setTodo("");
     };
@@ -64,6 +77,8 @@ const deleteTodo=(id:number)=>{
     }
 
   return (
+      <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss}>
+
     <View
     style={styles.container}>
     <View >
@@ -109,6 +124,7 @@ onChangeText={(value)=>setTodo(value)}
 
         </View>
     </View>
+     </TouchableWithoutFeedback>
   );
 };
 const styles = StyleSheet.create({
