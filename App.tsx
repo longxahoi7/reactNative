@@ -8,6 +8,7 @@
 import React from 'react';
 import {useState} from 'react';
 import type {PropsWithChildren} from 'react';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {
   SafeAreaView,
   ScrollView,
@@ -81,6 +82,12 @@ const deleteTodo=(id:number)=>{
 
     <View
     style={styles.container}>
+
+    <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+      <Ionicons name="home-outline" size={30} color="blue" />
+      <Ionicons name="cart-outline" size={30} color="green" />
+      <Ionicons name="heart-outline" size={30} color="red" />
+    </View>
     <View >
     <Text style={styles.header}>Long hoi ai tra loi</Text>
     </View>
@@ -96,12 +103,7 @@ onChangeText={(value)=>setTodo(value)}
        onPress={handle}
        />
     </View>
-     <View style={styles.body}>
-           <Text>
-           List Todo:{todo}
-           </Text>
-
-
+     <View style={styles.body1}>
 
              <Text>
                               <FlatList
@@ -114,6 +116,8 @@ onChangeText={(value)=>setTodo(value)}
                                                     })}
                                         onPress={()=>deleteTodo(item.id)}>
                                     <Text style={styles.text}>{item.name}</Text>
+                                    <Ionicons name="close-outline" size={30} color="red" />
+
                                                  </Pressable>
                                        )
                                   }}
